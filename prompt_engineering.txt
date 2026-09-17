@@ -1,0 +1,43 @@
+Prompt Engineering: Guiding Language Models Effectively
+
+Prompt engineering is the practice of designing and refining the inputs (prompts) given to large language models to reliably elicit desired outputs. As language models have become more capable, the art of communicating effectively with them has emerged as a valuable and sometimes critical skill. A well-engineered prompt can dramatically improve the quality, accuracy, and consistency of model outputs; a poorly designed prompt can lead to irrelevant, incorrect, or harmful responses.
+
+The term "prompt" refers to the text input provided to a language model. For modern conversational models, a prompt typically consists of a system prompt (instructions about the model's role and constraints, set by the developer), a conversation history (prior exchanges), and the current user message. Prompt engineering involves careful design of all these components.
+
+Core Principles of Effective Prompting
+
+Clarity and specificity are the most fundamental principles of good prompt engineering. Vague prompts produce vague outputs. Specific prompts that clearly state the desired task, format, audience, and constraints produce much better results. Instead of "summarize this article," a clearer prompt might be: "Summarize the following article in three bullet points, each no longer than one sentence, targeting a non-technical audience."
+
+Role assignment involves telling the model to adopt a specific persona or expertise. For example, "You are an expert software engineer with 10 years of Python experience" primes the model to respond with the appropriate level of technical depth. Role assignment works because models are trained on diverse text including writing by people in different roles, and the role framing activates the appropriate patterns.
+
+Instruction placement matters. Research and practice have shown that models pay more attention to instructions at the beginning and end of prompts. Critical constraints should appear in the system prompt (where they apply globally) and should be reinforced in the user message.
+
+Few-Shot Prompting
+
+Few-shot prompting involves providing examples of the desired input-output pattern within the prompt. Instead of describing a task in abstract terms, the prompter shows the model several demonstrations of how to perform it. For example, to classify sentiment, you might include two or three labeled examples of positive and negative sentences before the sentence to be classified. Few-shot prompting significantly improves consistency and accuracy for structured tasks and is especially valuable when the desired output format is unusual or complex.
+
+Zero-shot prompting, in contrast, relies on the model's pre-trained knowledge to perform the task without examples, using only a clear task description. Modern large models are highly capable zero-shot, but few-shot examples often provide a meaningful improvement, especially for edge cases.
+
+Chain-of-Thought Prompting
+
+Chain-of-Thought (CoT) prompting encourages the model to reason step by step before giving a final answer. By including a phrase like "Let's think step by step" or by providing few-shot examples that include intermediate reasoning steps, CoT prompting substantially improves performance on tasks requiring multi-step reasoning, mathematics, and logical deduction. The model's performance on complex problems is much better when it "thinks out loud" than when asked to jump directly to an answer.
+
+Tree of Thought (ToT) extends CoT by exploring multiple reasoning paths in parallel, allowing the model to backtrack and consider alternatives. ReAct (Reasoning + Acting) interleaves reasoning steps with tool use, allowing the model to gather external information to support its reasoning.
+
+Prompt Design for RAG Systems
+
+Retrieval-Augmented Generation (RAG) systems require especially careful prompt design. The RAG prompt must clearly communicate several things to the language model: that it should use only the provided context to answer the question, that it should not use outside knowledge, that it should acknowledge when the context is insufficient rather than guessing, that it should cite specific sources, and that it should express its confidence level.
+
+A typical RAG system prompt includes explicit rules: "You are a helpful assistant that answers questions strictly based on the provided context. If the answer is not in the context, say 'I don't have enough information in the provided knowledge base.' Do not guess or use outside knowledge. Cite the source number [1], [2], etc. for each piece of information you use." Without these constraints, even the best language models will sometimes blend retrieved context with parametric knowledge, potentially introducing hallucinated information.
+
+Advanced Prompting Techniques
+
+Structured output prompting asks the model to produce output in a specific format, such as JSON or Markdown. Providing the expected schema in the prompt dramatically improves the reliability of structured outputs. Self-consistency prompting generates multiple outputs from the same prompt (with temperature > 0) and selects the most common answer, improving reliability on reasoning tasks.
+
+Prompt chaining breaks complex tasks into a sequence of simpler prompts, where the output of each step becomes input to the next. This modular approach makes complex workflows manageable and allows for error checking between steps. Meta-prompting uses the model itself to improve or generate prompts, leveraging the model's knowledge of what makes prompts effective.
+
+Common Pitfalls
+
+Prompt injection is a security risk in which malicious content in the model's input (for example, text in a retrieved document) contains instructions that attempt to override the system prompt or cause the model to behave unexpectedly. Defending against prompt injection requires careful design of the prompt structure and awareness of the risk.
+
+Overlong prompts can degrade model performance. While modern models support large context windows, very long prompts can cause the model to lose track of earlier instructions or to attend less carefully to specific parts of the prompt. Context management — selecting the most relevant information and keeping prompts concise — remains important even with models that support large context windows.

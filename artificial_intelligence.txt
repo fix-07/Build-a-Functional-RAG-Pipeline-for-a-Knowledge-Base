@@ -1,0 +1,41 @@
+Introduction to Artificial Intelligence
+
+Artificial Intelligence (AI) is a branch of computer science focused on building systems that can perform tasks that typically require human intelligence. These tasks include reasoning, learning, problem-solving, understanding natural language, recognizing patterns, and making decisions. AI has transformed from a theoretical concept in the 1950s into a powerful set of tools that power modern applications across almost every industry.
+
+The term "Artificial Intelligence" was coined by John McCarthy in 1956 at the Dartmouth Conference, which is widely considered the founding moment of AI as a field. Early AI research focused on symbolic reasoning — encoding human knowledge as rules that a computer could follow. Systems called "expert systems" were built to simulate the decision-making ability of human experts. While these achieved some success, they were brittle, requiring manual encoding of every possible rule and struggling with any situation outside their narrow domain.
+
+The modern understanding of AI is broader. Today, AI encompasses a wide spectrum of approaches, from simple rule-based systems to complex deep learning models trained on billions of data points. At its core, the goal remains the same: to create machines that can act intelligently in a wide range of circumstances.
+
+Types of Artificial Intelligence
+
+Researchers often distinguish between Narrow AI and General AI. Narrow AI, also called Weak AI, refers to systems designed to perform a specific task — for example, playing chess, recognizing faces in photographs, or translating text between languages. Every AI system deployed commercially today is Narrow AI. These systems can outperform humans in their specific domain but cannot generalize their ability to other tasks.
+
+General AI, sometimes called Strong AI or Artificial General Intelligence (AGI), refers to a hypothetical system that could perform any intellectual task that a human can do. AGI would be able to reason across domains, transfer knowledge from one problem to another, and adapt to completely novel situations without retraining. As of today, AGI does not exist. It remains an active area of research and debate.
+
+A third concept, Artificial Superintelligence (ASI), refers to a hypothetical AI that surpasses human intelligence across all domains. ASI is largely a theoretical concern discussed in the context of AI safety research.
+
+Key Subfields of AI
+
+AI is not a monolithic field. It branches into several key subfields, each addressing different aspects of intelligence. Machine Learning is the subfield most responsible for the current wave of AI progress. It studies how systems can learn from data without being explicitly programmed. Deep Learning, a subfield of Machine Learning, uses artificial neural networks with many layers to automatically learn hierarchical representations of data.
+
+Natural Language Processing (NLP) focuses on enabling computers to understand, interpret, and generate human language. Computer Vision enables machines to interpret and make sense of visual information from the world. Robotics combines AI with mechanical engineering to create machines that can interact with the physical environment. Planning and optimization algorithms allow AI systems to find the best sequence of actions to achieve a goal.
+
+The Role of Data in Modern AI
+
+Modern AI systems, particularly those based on machine learning, are fundamentally data-driven. Instead of being programmed with explicit rules, these systems learn patterns from large collections of examples. The quality, quantity, and diversity of training data directly determine the capability and reliability of an AI system. This has led to massive investments in data collection, labeling, and management.
+
+The rise of the internet created an unprecedented source of data — text, images, video, audio, and structured records — that has fueled the AI revolution. Large technology companies built competitive advantages by accumulating vast proprietary datasets. Meanwhile, open datasets and benchmarks have allowed academic researchers to measure and compare progress across the field.
+
+AI Ethics and Safety
+
+As AI systems become more capable and widely deployed, questions of ethics and safety have moved to the forefront. Key concerns include bias in AI systems — the tendency for models to replicate or amplify biases present in their training data. A hiring algorithm trained on historical data may systematically disadvantage certain groups. A facial recognition system trained mostly on one demographic may perform poorly on others.
+
+Transparency and explainability are also central issues. Many modern AI systems, especially deep learning models, are often described as "black boxes" because it is difficult to understand exactly why they make a particular decision. This raises concerns in high-stakes domains like healthcare, criminal justice, and financial services.
+
+AI safety research addresses longer-term risks, including ensuring that AI systems remain aligned with human values and intentions even as they become more powerful. The field studies problems like specification — ensuring the AI is optimizing for what we actually want — and robustness — ensuring systems behave reliably in unexpected situations.
+
+Current State and Future Directions
+
+AI capabilities have advanced dramatically in the last decade, driven primarily by deep learning. Language models now generate human-quality text. Image generation models produce photorealistic imagery from text descriptions. AI systems beat human champions at games like Go and chess. Medical AI systems detect certain cancers from imaging data with accuracy comparable to radiologists.
+
+Despite this progress, significant challenges remain. AI systems require enormous amounts of data and computation. They often fail in unexpected ways outside their training distribution. They lack common sense reasoning and robust generalization. The field continues to advance rapidly, with new breakthroughs in areas like multimodal AI, AI reasoning, and AI agents that can take actions in the world.

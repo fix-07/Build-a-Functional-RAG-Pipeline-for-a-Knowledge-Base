@@ -1,0 +1,41 @@
+Large Language Models: Architecture, Training, and Capabilities
+
+Large Language Models (LLMs) are a class of artificial neural networks trained on vast amounts of text data to understand and generate human language. They have emerged as one of the most transformative technologies in the history of AI, enabling applications ranging from code generation and creative writing to question answering and complex reasoning. Modern LLMs include GPT-4, Claude, Gemini, Llama, and Mistral, among many others.
+
+LLMs are built on the Transformer architecture, introduced in the 2017 paper "Attention Is All You Need." The core innovation of the Transformer is the self-attention mechanism, which allows the model to weigh the relevance of every word in the input when processing each word. This is fundamentally different from earlier sequential models, which processed text one word at a time and struggled to maintain long-range dependencies.
+
+Scale and Pre-training
+
+The defining characteristic of large language models is their scale. Modern LLMs have billions or even trillions of parameters — the learnable weights in the network. GPT-3, released by OpenAI in 2020, had 175 billion parameters and was trained on hundreds of billions of words of internet text. Subsequent models have continued to scale.
+
+LLMs are typically trained using a self-supervised learning objective called next-token prediction. Given a sequence of tokens (subword units derived from text), the model learns to predict the next token. This seemingly simple objective, applied at enormous scale over diverse text, forces the model to learn grammar, facts, reasoning patterns, and much more. No human-labeled data is required for this pre-training phase — the text itself provides the supervisory signal.
+
+During pre-training, the model is exposed to an enormous variety of text: web pages, books, academic articles, code, forum discussions, and more. This diverse exposure allows the model to develop broad linguistic competence and factual knowledge spanning many domains.
+
+Fine-Tuning and Alignment
+
+A pre-trained LLM is powerful but not necessarily well-behaved. It may generate harmful content, give confident but incorrect answers, or fail to follow instructions. Fine-tuning is the process of further training the model on smaller, curated datasets to improve specific capabilities or align its behavior with human values.
+
+Instruction fine-tuning trains the model on examples of instructions and desired responses, making it better at following user requests. Reinforcement Learning from Human Feedback (RLHF) is a more sophisticated alignment technique in which human raters compare model outputs, and this preference data is used to train a reward model that in turn guides further fine-tuning via reinforcement learning. RLHF was used to create ChatGPT and similar conversational assistants.
+
+Constitutional AI (CAI), developed by Anthropic, is another alignment approach in which the model is trained to evaluate its own outputs against a set of principles and revise them accordingly, reducing reliance on large-scale human feedback.
+
+Context Window and Tokenization
+
+An LLM processes text in units called tokens, which are typically subword fragments. The word "running" might be one token, while "unbelievable" might be split into two or three tokens. Tokenization converts raw text into a sequence of integers that the model processes.
+
+The context window is the maximum number of tokens the model can process in a single forward pass. Early LLMs had context windows of 2,048 tokens. Modern models support 128,000 tokens or more, allowing them to process long documents, extensive conversation histories, and large codebases in a single request. The context window fundamentally limits what the model can "see" and consider when generating a response.
+
+Capabilities and Emergent Behaviors
+
+LLMs exhibit a remarkable range of capabilities. They can answer factual questions, summarize long documents, translate between languages, write and debug code, draft emails, explain complex concepts, solve mathematical problems, and engage in multi-turn conversations. Many of these capabilities emerge without explicit training on those specific tasks — they appear to arise from the breadth of pre-training.
+
+LLMs also exhibit "emergent capabilities" — abilities that are not present in smaller models but appear suddenly as model scale crosses certain thresholds. Examples include multi-step arithmetic, analogical reasoning, and the ability to follow complex instructions. The mechanisms behind emergence are an active research topic.
+
+LLMs can be prompted with few-shot examples — demonstrations of the desired task within the input — to rapidly adapt their behavior without any weight updates. This in-context learning is a powerful property that distinguishes LLMs from earlier specialized models.
+
+Limitations and Hallucinations
+
+LLMs have significant limitations. The most critical is hallucination: LLMs confidently generate plausible-sounding text that is factually incorrect. A model asked about a person or event may invent details, cite non-existent sources, or confabulate a plausible narrative. This occurs because LLMs are trained to produce fluent, contextually coherent text, not necessarily accurate text.
+
+LLMs lack grounding in the physical world and cannot access real-time information unless equipped with tools. Their knowledge is static, frozen at the time of training. They can exhibit biases inherited from training data. They may struggle with precise numerical reasoning, formal logic, and long chains of deductive reasoning. Retrieval-Augmented Generation (RAG) and tool use are strategies developed to address some of these limitations by supplementing the model's parametric knowledge with external information sources.

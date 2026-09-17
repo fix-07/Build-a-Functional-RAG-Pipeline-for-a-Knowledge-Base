@@ -1,0 +1,37 @@
+Vector Databases and Similarity Search
+
+A vector database is a specialized database system designed to store, index, and efficiently search high-dimensional vector embeddings. While traditional relational databases excel at exact lookups and structured queries, vector databases are optimized for similarity search: finding the vectors in the database that are most similar to a given query vector. This capability is fundamental to applications like semantic search, recommendation systems, image similarity search, and Retrieval-Augmented Generation (RAG) pipelines.
+
+The challenge that vector databases solve is computational. A modern embedding model might represent each piece of text as a vector of 384 or 1536 numbers. A knowledge base might contain millions of such vectors. To find the most similar vectors to a query, a naive approach would compute the distance between the query and every vector in the database — this is called exact nearest neighbor (ANN) search. For small collections, this is feasible. But with millions or billions of vectors, exhaustive comparison becomes prohibitively slow.
+
+Approximate Nearest Neighbor Search
+
+Most vector databases use Approximate Nearest Neighbor (ANN) algorithms that trade a small degree of accuracy for dramatic speed improvements. Instead of guaranteeing the exact nearest neighbor, these algorithms find vectors that are very likely to be among the nearest neighbors, in a fraction of the time.
+
+Hierarchical Navigable Small Worlds (HNSW) is one of the most popular ANN algorithms. It builds a multi-layer graph structure over the vectors. The top layers contain fewer nodes connected by long-range links, enabling fast traversal across the space. The lower layers contain more nodes with short-range links, enabling precise local search. A query navigates from the top layer down to the bottom, quickly homing in on the nearest neighbors. HNSW achieves excellent query performance and recall.
+
+Inverted File Index (IVF) is another approach that partitions the vector space into clusters using k-means. During a query, only the nearest clusters are searched exhaustively, dramatically reducing the number of distance computations. IVF can be combined with Product Quantization (PQ), which compresses vectors into compact codes, further reducing memory usage and computation.
+
+FAISS: Facebook AI Similarity Search
+
+FAISS (Facebook AI Similarity Search) is an open-source library developed by Facebook AI Research (now Meta AI) for efficient similarity search and clustering of dense vectors. It implements many ANN algorithms, including exact IndexFlatL2 (exhaustive search using L2 distance), IndexFlatIP (using inner product), IndexIVFFlat (inverted file index), and IndexIVFPQ (with product quantization). FAISS is optimized for GPU acceleration and is widely used in research and production systems.
+
+IndexFlatL2 is the simplest FAISS index type. It stores all vectors in a flat array and performs exact nearest neighbor search using the squared Euclidean (L2) distance. For small to medium datasets (up to a few hundred thousand vectors), it is practical and guarantees exact results. It is a good choice for RAG systems with relatively small knowledge bases where exact retrieval is preferred over speed approximations.
+
+Using FAISS involves three steps: building an index of the desired type, adding vectors to the index with index.add(), and querying with index.search(), which returns the distances and indices of the k nearest neighbors.
+
+Distance Metrics
+
+The choice of distance metric determines what "similar" means in the vector space. L2 (Euclidean) distance measures the straight-line distance between two vectors in space. Inner product (dot product) measures the projection of one vector onto another. Cosine similarity measures the angle between two vectors, ignoring magnitude — it is equivalent to the inner product of normalized vectors. For embeddings produced by sentence transformers, cosine similarity is often the recommended metric because the model is typically trained to produce embeddings where semantic similarity corresponds to cosine similarity.
+
+FAISS's IndexFlatL2 uses L2 distance. To use cosine similarity with FAISS, vectors are first normalized to unit length (using L2 normalization) and then an inner product index (IndexFlatIP) is used. Since all vectors have length 1, the inner product equals the cosine similarity.
+
+Dedicated Vector Database Systems
+
+While FAISS is a library that can be embedded in an application, dedicated vector database systems provide additional features: persistence, indexing of metadata, filtering (returning only vectors that match certain attribute conditions), and distributed deployment for very large collections.
+
+Chroma is a lightweight, open-source vector database designed for simplicity and developer experience. It runs in-process or as a standalone server and integrates well with popular frameworks like LangChain. Pinecone is a fully managed cloud vector database that scales to billions of vectors. Qdrant is an open-source vector database written in Rust that supports sophisticated filtering alongside vector search. Weaviate is another open-source vector database that supports multiple modalities and has strong GraphQL integration. Milvus is a high-performance open-source vector database designed for large-scale production deployments.
+
+Role in RAG Systems
+
+In a Retrieval-Augmented Generation (RAG) system, the vector database is the core of the retrieval component. The knowledge base documents are chunked, embedded using a sentence embedding model, and stored in the vector database. When a user submits a query, the query is embedded using the same model, and the vector database is searched for the most similar document chunks. These retrieved chunks are then provided as context to the language model, which generates a response grounded in the retrieved information. The quality of retrieval — how relevant the retrieved chunks are to the query — directly determines the quality of the generated answer.

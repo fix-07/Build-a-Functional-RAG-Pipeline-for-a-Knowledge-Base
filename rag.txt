@@ -1,0 +1,39 @@
+Retrieval-Augmented Generation (RAG)
+
+Retrieval-Augmented Generation (RAG) is an AI architecture that enhances large language models by combining them with a retrieval system that can look up relevant information from an external knowledge base before generating a response. RAG was introduced in a 2020 paper by researchers at Facebook AI and has since become one of the most important and widely used patterns in applied AI development.
+
+The core insight behind RAG is that language models have two types of knowledge: parametric knowledge (information encoded in the model's weights during training) and contextual knowledge (information provided in the model's input, or context window). Parametric knowledge is static — it cannot be updated without retraining the model. Contextual knowledge is dynamic — the model can use any information placed in its context window. RAG leverages this distinction by retrieving relevant, up-to-date information and placing it in the context window, effectively giving the model access to a constantly updated, domain-specific knowledge base without retraining.
+
+The RAG Pipeline
+
+A RAG system consists of two main phases: the indexing phase and the retrieval-generation phase.
+
+In the indexing phase, the knowledge base is prepared for retrieval. Documents are loaded from their source (files, databases, web pages, APIs). They are cleaned and preprocessed — removing noise, correcting encoding issues, normalizing whitespace. They are split into chunks — smaller passages of text that will fit within the language model's context window. Each chunk is embedded using a sentence embedding model, which converts it into a high-dimensional vector. These vectors are stored in a vector database or index (such as FAISS), along with metadata like the source document name, title, and chunk ID. This indexing process is performed once (or periodically when the knowledge base is updated) and the index is persisted to disk.
+
+In the retrieval-generation phase, a user submits a query. The query is embedded using the same embedding model used to embed the chunks. The query vector is used to search the vector index, retrieving the top-k most semantically similar chunks. The retrieved chunks, along with metadata identifying their sources, are assembled into a context string. A carefully crafted prompt is constructed that includes the retrieved context and instructs the language model to answer the question using only the provided context. This prompt is sent to the language model, which generates a response grounded in the retrieved information. The response includes citations indicating which source documents were used.
+
+Why RAG Reduces Hallucinations
+
+Language models are prone to hallucination — generating plausible-sounding but factually incorrect information. RAG helps reduce hallucinations in several ways. By providing relevant, factual context in the prompt, the model is guided toward using that information rather than relying on imprecise parametric memory. Explicit instructions in the RAG prompt tell the model to restrict its answer to the provided context and to acknowledge when the context is insufficient. This grounding effect does not completely eliminate hallucinations — a poorly designed RAG system can still hallucinate — but it significantly reduces them for information that exists in the knowledge base.
+
+RAG also enables attribution: because the response is grounded in specific retrieved documents, the system can cite its sources, making it easier for users to verify the information and understand where it came from.
+
+Key Design Decisions
+
+Several design decisions significantly affect RAG performance. Chunk size is a critical parameter. Smaller chunks are more precise but may miss important context. Larger chunks preserve more context but may include irrelevant information that confuses the retrieval and generation steps. Typical chunk sizes range from 256 to 1024 tokens. Chunk overlap — including some text from the previous chunk at the start of each new chunk — helps preserve context across chunk boundaries.
+
+The choice of embedding model determines how well semantic similarity corresponds to relevance. Models like all-MiniLM-L6-v2 or all-mpnet-base-v2 offer good performance on general-domain text. Domain-specific data may benefit from fine-tuned or specialized embedding models.
+
+The number of retrieved chunks (top-k) balances breadth of coverage against context noise and length. Retrieving more chunks increases the chance of finding the relevant information but also increases context length and the risk of including distracting or irrelevant passages. Typical values are 3-5 chunks.
+
+The prompt template shapes how the model uses the retrieved context. An effective RAG prompt clearly instructs the model to use only the provided context, to cite sources, to indicate confidence levels, and to decline to answer when the context is insufficient.
+
+Limitations and Advanced Techniques
+
+RAG has several important limitations. If the relevant information is not in the knowledge base, RAG cannot find it. Poor chunking may split important context across chunk boundaries. The retrieval step may fail to find the most relevant chunks if the semantic similarity between the query and relevant content is low — for example, if the query uses different terminology than the source documents. Long-tail or highly specific queries may not match well against any chunk.
+
+Advanced RAG techniques address these limitations. Hybrid retrieval combines dense vector search with sparse keyword search (BM25) to handle queries that contain important specific terms. Re-ranking uses a cross-encoder model to re-score retrieved chunks based on their relevance to the query. Query expansion generates multiple reformulations of the original query to improve recall. HyDE (Hypothetical Document Embeddings) generates a hypothetical answer to the query and uses its embedding for retrieval. Multi-hop RAG performs multiple retrieval steps to answer questions that require combining information from multiple sources.
+
+RAG vs. Fine-tuning
+
+A common question is when to use RAG versus fine-tuning a language model on domain-specific data. RAG is preferred when the knowledge base needs to be updated frequently, when transparency and citation are important, when the knowledge base is large, or when the developer wants to avoid the cost and complexity of fine-tuning. Fine-tuning is preferred when the desired behavior (style, format, tone) needs to change, when the domain-specific knowledge is stable, or when inference latency is critical. In practice, RAG and fine-tuning are complementary and can be combined.

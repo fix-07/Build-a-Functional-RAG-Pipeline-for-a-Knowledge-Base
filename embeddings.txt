@@ -1,0 +1,41 @@
+Embeddings: Representing Meaning as Vectors
+
+Embeddings are numerical representations of data — typically words, sentences, documents, images, or other entities — as dense vectors in a high-dimensional mathematical space. The fundamental insight behind embeddings is that meaning can be captured geometrically: similar concepts are represented by vectors that are close together in this space, while dissimilar concepts are far apart. This makes embeddings the critical bridge between raw data and machine learning algorithms that operate on numbers.
+
+Before embeddings, text was typically represented using sparse, high-dimensional methods like one-hot encoding (a vector with a single 1 and zeros everywhere else) or bag-of-words (a vector of word counts). These representations treat each word as independent and cannot capture semantic relationships. The word "happy" and the word "joyful" would be represented as completely unrelated vectors, even though they are near synonyms.
+
+Word Embeddings
+
+The modern era of embeddings began with Word2Vec, a technique published by Google researchers in 2013. Word2Vec trains shallow neural networks on the task of predicting a word from its surrounding context (or vice versa). Through this training, words that appear in similar contexts end up with similar vector representations. The resulting embeddings capture remarkable semantic relationships. The classic example is the vector arithmetic: vector("King") - vector("Man") + vector("Woman") ≈ vector("Queen"). Capital city relationships, grammatical patterns, and many other regularities are encoded in the geometry of the embedding space.
+
+GloVe (Global Vectors for Word Representation) is another influential word embedding method that explicitly uses global word co-occurrence statistics across a large corpus. FastText, developed by Facebook Research, extends Word2Vec by representing each word as a bag of character n-grams, enabling it to generate embeddings for words not seen during training.
+
+A key limitation of static word embeddings is that they assign each word a single fixed vector, regardless of context. The word "bank" has the same embedding in "river bank" and "bank account," even though the meanings are entirely different.
+
+Contextual Embeddings and Sentence Transformers
+
+Contextual embeddings solve this problem by producing different representations for the same word depending on its context. ELMo (Embeddings from Language Models) was an early contextual embedding approach that used bidirectional LSTMs. BERT (Bidirectional Encoder Representations from Transformers), published by Google in 2018, became the dominant approach: it uses the Transformer architecture and is trained with a masked language modeling objective, producing rich contextual representations.
+
+Sentence Transformers are models specifically fine-tuned to produce high-quality sentence and document embeddings. The model all-MiniLM-L6-v2, for example, is a lightweight but effective sentence embedding model that maps full sentences to 384-dimensional vectors. Sentences with similar meaning are mapped to nearby points in the 384-dimensional space. This makes it ideal for semantic search, where the goal is to find documents that are semantically relevant to a query, not just documents that share exact keywords.
+
+The process of generating an embedding typically involves tokenizing the input, passing it through the neural network, and taking some aggregation of the output representations (such as averaging the token representations or using a special [CLS] token). The resulting vector is the embedding.
+
+How Embeddings Enable Semantic Search
+
+Traditional keyword search looks for exact word matches between a query and documents. If a user searches for "car" and a document uses only the word "automobile," the keyword search will miss it. Semantic search using embeddings avoids this problem: both "car" and "automobile" are embedded near each other in the semantic space, so documents about automobiles will be retrieved for a query about cars.
+
+In a semantic search system, all documents in the knowledge base are embedded using the same model. These embeddings are stored in a vector database or index. When a user submits a query, it is also embedded using the same model, producing a query vector. The system then finds the document vectors that are most similar to the query vector, using a distance metric like cosine similarity or Euclidean distance. The documents corresponding to the nearest vectors are returned as the most relevant results.
+
+This approach is the foundation of Retrieval-Augmented Generation (RAG) systems, where semantic search is used to find relevant chunks from a knowledge base that are then provided as context to a language model.
+
+Multimodal Embeddings
+
+Embeddings are not limited to text. Multimodal embedding models can map both text and images into the same vector space. CLIP (Contrastive Language-Image Pre-Training) by OpenAI is a landmark model that learns aligned text and image representations by training on pairs of images and their text descriptions. In CLIP's embedding space, the vector for the text "a photo of a cat" is close to the vectors of actual images of cats. This enables cross-modal retrieval: searching for images using text queries, or comparing text and visual content directly.
+
+Audio embeddings, graph embeddings, and code embeddings are other active areas of research, each enabling semantic search and similarity computations within their respective modalities.
+
+Practical Considerations
+
+The dimensionality of an embedding vector is a key design choice. Higher-dimensional embeddings can capture more nuanced meaning but require more storage and computation. Common embedding dimensions range from 128 to 1536 or more. The choice of embedding model also matters: models fine-tuned on domain-specific data typically outperform general-purpose models for that domain. For example, a medical embedding model trained on clinical text may produce better results for medical document retrieval than a general-purpose sentence transformer.
+
+Embedding quality degrades when applied to domains very different from the training data. This distributional shift problem means practitioners must carefully evaluate embedding models on their specific use case and domain.
